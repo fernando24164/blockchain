@@ -2,4 +2,4 @@
 
 Just another implementation of blockchain
 
-[Based on this repo:](https://github.com/lhartikk/naivecoin)
+[Based on this repo](https://github.com/lhartikk/naivecoin)

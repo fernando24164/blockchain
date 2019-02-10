@@ -52,7 +52,7 @@ const isValidNewBlock = (newBlock: Block, previousBlock: Block): boolean => {
     return true;
 };
 
-const isValidBlockStrucuture = (block: Block): boolean => {
+const isValidBlockStructure = (block: Block): boolean => {
     return typeof block.index === 'number'
         && typeof block.hash === 'string'
         && typeof block.previousHash === 'string'
@@ -70,4 +70,12 @@ const isValidChain = (blockChain: Block[]): boolean => {
     }
 
     return true && isValidInit(blockChain[0]);
+}
+
+module.exports = {
+    isValidChain: isValidChain,
+    isValidBlockStructure: isValidBlockStructure,
+    isValidNewBlock: isValidNewBlock,
+    generateNextBlock: generateNextBlock,
+    calculateHash: calculateHash
 }
