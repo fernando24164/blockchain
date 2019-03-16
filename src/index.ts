@@ -1,20 +1,44 @@
-const CryptoJS = require('crypto-js');
+import CryptoJS from 'crypto-js'
 
-class Block {
+export class Block {
 
-    public index: number;
-    public hash: string;
-    public previousHash: string | null;
-    public timestamp: number;
-    public data: string;
+    private _index: number;
+    private _hash: string;
+    private _previousHash: string | null;
+    private _timestamp: number;
+    private _data: string;
 
     constructor(index: number, hash: string, previousHash: string | null,
         timestamp: number, data: string) {
-        this.index = index;
-        this.previousHash = previousHash;
-        this.hash = hash;
-        this.timestamp = timestamp;
-        this.data = data;
+        this._index = index;
+        this._previousHash = previousHash;
+        this._hash = hash;
+        this._timestamp = timestamp;
+        this._data = data;
+    }
+
+    public get index(): number {
+        return this._index
+    }
+
+
+    public get hash(): string {
+        return this._hash
+    }
+
+
+    public get previousHash(): string | null {
+        return this._previousHash
+    }
+
+
+    public get timestamp(): number {
+        return this._timestamp
+    }
+
+
+    public get data(): string {
+        return this._data
     }
 
 }
@@ -24,15 +48,15 @@ const genesisBlock: Block = new Block(0, CryptoJS.MD5("Genesis Block", "secret-s
 
 const blockChain: Block[] = [genesisBlock];
 
-const calculateHash = (index: number, previousHash: string, timestamp: number, data: string): string => {
+export const calculateHash = (index: number, previousHash: string, timestamp: number, data: string): string => {
     return CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
 };
 
-const getLatestBlock = () => {
-    return blockChain[blockChain.length-1];
+export const getLatestBlock = () => {
+    return blockChain[blockChain.length - 1];
 };
 
-const generateNextBlock = (blockData: string): Block => {
+export const generateNextBlock = (blockData: string): Block => {
     const previousBlock: Block = getLatestBlock();
     const nextIndex: number = previousBlock.index + 1;
     const nextTimestamp: number = new Date().getTime() / 1000;
@@ -41,7 +65,7 @@ const generateNextBlock = (blockData: string): Block => {
     return newBlock;
 };
 
-const isValidNewBlock = (newBlock: Block, previousBlock: Block): boolean => {
+export const isValidNewBlock = (newBlock: Block, previousBlock: Block): boolean => {
     if (previousBlock.index + 1 !== newBlock.index) {
         return false;
     } else if (previousBlock.hash !== newBlock.previousHash) {
@@ -52,7 +76,7 @@ const isValidNewBlock = (newBlock: Block, previousBlock: Block): boolean => {
     return true;
 };
 
-const isValidBlockStructure = (block: Block): boolean => {
+export const isValidBlockStructure = (block: Block): boolean => {
     return typeof block.index === 'number'
         && typeof block.hash === 'string'
         && typeof block.previousHash === 'string'
@@ -60,19 +84,19 @@ const isValidBlockStructure = (block: Block): boolean => {
         && typeof block.data === 'string';
 };
 
-const isValidChain = (blockChain: Block[]): boolean => {
+export const isValidChain = (blockChain: Block[]): boolean => {
     const isValidInit = (block: Block) => {
         return JSON.stringify(block) === JSON.stringify(genesisBlock);
     };
 
-    for(let i = 1;i<blockChain.length;i++){
-        return isValidNewBlock(blockChain[i], blockChain[i-1]);
+    for (let i = 1; i < blockChain.length; i++) {
+        return isValidNewBlock(blockChain[i], blockChain[i - 1]);
     }
 
     return true && isValidInit(blockChain[0]);
 }
 
-module.exports = {
+export default {
     isValidChain: isValidChain,
     isValidBlockStructure: isValidBlockStructure,
     isValidNewBlock: isValidNewBlock,

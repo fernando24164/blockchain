@@ -1,7 +1,5 @@
-const chai = require("chai")
-const expect = chai.expect;
-
-const blockChain = require('../src/index');
+import { expect } from 'chai'
+import blockChain from '../src/index'
 
 describe("Blockchain suite test", () => {
     it("should test block hash creation", () => {
