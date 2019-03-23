@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js'
+import { broadcastLatest } from './peerConnection'
 
 export class Block {
 
@@ -46,7 +47,7 @@ export class Block {
 const genesisBlock: Block = new Block(0, CryptoJS.MD5("Genesis Block", "secret-string").toString(),
     null, new Date().getTime() / 1000, "Big Bang");
 
-const blockChain: Block[] = [genesisBlock];
+let blockChain: Block[] = [genesisBlock];
 
 export const calculateHash = (index: number, previousHash: string, timestamp: number, data: string): string => {
     return CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
@@ -94,6 +95,23 @@ export const isValidChain = (blockChain: Block[]): boolean => {
     }
 
     return true && isValidInit(blockChain[0]);
+}
+
+export const getBlockchain = (): Block[] => blockChain;
+
+export const addBlockToChain = (newBlock: Block) => {
+    if (isValidNewBlock(newBlock, getLatestBlock())) {
+        blockChain.push(newBlock);
+        return true;
+    }
+    return false;
+};
+
+export const replaceChain = (newBlocks: Block[]) => {
+    if (isValidChain(newBlocks) && getBlockchain().length < newBlocks.length) {
+        blockChain = newBlocks;
+        broadcastLatest();
+    }
 }
 
 export default {
