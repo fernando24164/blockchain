@@ -7,7 +7,7 @@
     "prestart": "npm run compile",
     "start": "npm run prestart && node src/index.js",
     "compile": "tsc",
-    "test": "npx mocha -r ts-node/register test/*.test.ts"
+    "test": "npx mocha -r ts-node/register test/*.spec.ts"
   },
   "author": "",
   "license": "ISC",

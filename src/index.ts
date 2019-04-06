@@ -62,6 +62,12 @@ export const calculateHash = (
   return CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
 };
 
+export const reprChain = (blockchain: Block[]) => {
+  for (let block of blockchain) {
+    console.log(`|${block.index}: ${block.data}|`);
+  }
+};
+
 export const getLatestBlock = () => {
   return blockChain[blockChain.length - 1];
 };
@@ -134,4 +140,6 @@ export default {
   isValidNewBlock: isValidNewBlock,
   generateNextBlock: generateNextBlock,
   calculateHash: calculateHash,
+  reprChain: reprChain,
+  getBlockchain,
 };
