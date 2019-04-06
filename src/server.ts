@@ -14,7 +14,7 @@ const initHttpServer = (myHttpPort: number) => {
         res.send(getBlockchain())
     })
 
-    app.post('/mineBlock', (req, res) => {
+    app.post('/blocks', (req, res) => {
         let newBlock: Block = generateNextBlock(req.body.data);
         res.send(newBlock)
     })
@@ -23,7 +23,7 @@ const initHttpServer = (myHttpPort: number) => {
         res.send(getSockets().map((s: any): string => s.url))
     })
 
-    app.post('/addPeer', (req, res) => {
+    app.post('/peers', (req, res) => {
         res.status(201)
         res.send('null')
     })
